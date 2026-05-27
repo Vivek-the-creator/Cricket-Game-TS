@@ -1,0 +1,104 @@
+{
+  "highestScore": 100,
+  "games": [
+    {
+      "date": "2026-05-26",
+      "total": 48,
+      "players": {
+        "Rohit": 38,
+        "Virat": 0,
+        "Dhoni": 10
+      }
+    },
+    {
+      "date": "2026-05-26",
+      "total": 37,
+      "players": {
+        "Rohit": 31,
+        "Virat": 0,
+        "Dhoni": 6
+      }
+    },
+    {
+      "date": "2026-05-26",
+      "total": 0,
+      "players": {
+        "Rohit": 0,
+        "Virat": 0,
+        "Dhoni": 0
+      }
+    },
+    {
+      "date": "2026-05-26",
+      "total": 100,
+      "players": {
+        "Rohit": 7,
+        "Virat": 46,
+        "Dhoni": 47
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 56,
+      "players": {
+        "Rohit": 10,
+        "Virat": 4,
+        "Dhoni": 42
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 63,
+      "players": {
+        "Rohit": 3,
+        "Virat": 26,
+        "Dhoni": 34
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 11,
+      "players": {
+        "Rohit": 0,
+        "Virat": 0,
+        "Dhoni": 11
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 99,
+      "players": {
+        "Rohit": 47,
+        "Virat": 41,
+        "Dhoni": 11
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 47,
+      "players": {
+        "Rohit": 3,
+        "Virat": 6,
+        "Dhoni": 38
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 0,
+      "players": {
+        "Rohit": 0,
+        "Virat": 0,
+        "Dhoni": 0
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "total": 3,
+      "players": {
+        "Rohit": 1,
+        "Virat": 0,
+        "Dhoni": 2
+      }
+    }
+  ]
+}

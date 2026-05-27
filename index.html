@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand Cricket - Modern Arcade Game</title>
+  <!-- Prevents favicon 404 error -->
+  <link rel="icon" href="data:,">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Dynamic Background Stadium Visualizer -->
+  <div class="stadium-bg">
+    <div class="stadium-overlay"></div>
+    <div class="stadium-lights">
+      <div class="light light-left"></div>
+      <div class="light light-right"></div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Header Actions (Visible during game) -->
+    <header class="game-header hidden" id="game-header">
+      <div class="header-left">
+        <button id="btn-home" class="icon-btn" title="Back to Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </button>
+      </div>
+      <div class="header-right">
+        <button id="btn-sound" class="icon-btn" title="Toggle Sound">
+          <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-2"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-x hidden"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        </button>
+        <button id="btn-pause" class="icon-btn" title="Pause Game">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+        </button>
+        <button id="btn-restart" class="icon-btn" title="Restart Match">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 1. LANDING SCREEN -->
+    <section id="landing-screen" class="screen active">
+      <div class="title-container">
+        <h1 class="game-title">HAND<br><span class="neon-text">CRICKET</span></h1>
+        <p class="game-subtitle">Arcade Timing Edition</p>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="stats-card">
+        <div class="stat-box">
+          <span class="stat-label">HIGH SCORE</span>
+          <span class="stat-value neon-cyan" id="landing-high-score">0</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-label">TOTAL GAMES</span>
+          <span class="stat-value neon-yellow" id="landing-total-games">0</span>
+        </div>
+      </div>
+
+      <!-- Play Button -->
+      <button id="btn-play" class="btn btn-primary pulse-effect">
+        PLAY GAME
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+      </button>
+
+      <!-- History Section -->
+      <div class="history-container">
+        <h2 class="section-title">Match History</h2>
+        <div class="history-list" id="landing-history-list">
+          <div class="history-empty">No games played yet. Hit play to start!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. GAME SCREEN -->
+    <section id="game-screen" class="screen hidden">
+      <div class="game-layout">
+        
+        <!-- Game Left/Center: Scoreboard and Pitch -->
+        <div class="game-main-area">
+          
+          <!-- Neon Scoreboard -->
+          <div class="scoreboard-glow-wrapper">
+            <div class="scoreboard-container">
+              <div class="scoreboard-header">
+                <div class="batsman-info">
+                  <span class="status-indicator live-pulse"></span>
+                  <span class="label">BATTING:</span>
+                  <span class="value" id="score-batsman">Rohit</span>
+                </div>
+                <div class="runs-info">
+                  <span class="label">BATSMAN:</span>
+                  <span class="value" id="batsman-individual-score">0* <span class="balls-faced">(0b)</span></span>
+                </div>
+              </div>
+              
+              <div class="scoreboard-main">
+                <div class="runs-wickets-glow" id="score-display">0/0</div>
+              </div>
+              
+              <div class="scoreboard-footer">
+                <div class="balls-info">
+                  <span class="label">BALLS:</span>
+                  <span class="value" id="score-balls">0</span>
+                </div>
+                <div class="target-info">
+                  <span class="label">BEST:</span>
+                  <span class="value" id="score-best-score">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stadium Field & Pitch (Center Visuals) -->
+          <div class="stadium-field">
+            <div class="pitch-line"></div>
+            
+            <!-- Dynamic Batsman Graphic -->
+            <div class="cricket-avatar-container" id="batsman-avatar-container">
+              <div class="cricket-avatar" id="batsman-avatar">🏏</div>
+              <div class="batter-name-tag" id="batter-tag">Rohit</div>
+            </div>
+
+            <!-- Running effect/Wicket animation overlays -->
+            <div class="pitch-overlay" id="pitch-overlay"></div>
+          </div>
+
+          <!-- Bottom Action Area -->
+          <div class="action-bar">
+            <button id="btn-bat" class="btn-bat-swing">
+              <div class="bat-icon-wrapper">
+                <!-- SVG Cricket Bat Icon -->
+                <svg viewBox="0 0 100 100" class="bat-svg">
+                  <!-- Handle -->
+                  <rect x="46" y="5" width="8" height="35" rx="4" fill="#a0522d" />
+                  <!-- Grip Wrap details -->
+                  <line x1="46" y1="12" x2="54" y2="12" stroke="#ffeb3b" stroke-width="1.5" />
+                  <line x1="46" y1="20" x2="54" y2="20" stroke="#ffeb3b" stroke-width="1.5" />
+                  <line x1="46" y1="28" x2="54" y2="28" stroke="#ffeb3b" stroke-width="1.5" />
+                  <!-- Bat Blade -->
+                  <path d="M 43,40 
+                           L 57,40 
+                           A 2,2 0 0 1 59,42
+                           L 59,88
+                           A 6,6 0 0 1 53,94
+                           L 47,94
+                           A 6,6 0 0 1 41,88
+                           L 41,42
+                           A 2,2 0 0 1 43,40 Z" 
+                        fill="#ffb74d" 
+                        stroke="#e65100" 
+                        stroke-width="1" />
+                  <!-- Wood texture detail -->
+                  <line x1="50" y1="44" x2="50" y2="88" stroke="#ffe0b2" stroke-width="1.5" />
+                </svg>
+              </div>
+              <span class="bat-text">SWING BAT</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Game Right: Vertical Timing Bar -->
+        <aside class="timing-bar-sidebar">
+          <div class="timing-bar-title">TIMING</div>
+          <div class="timing-bar-outer" id="timing-bar-container">
+            <!-- Zones overlay -->
+            <div class="zone-red zone-top"></div>
+            <div class="zone-yellow zone-yellow-top"></div>
+            <div class="zone-green">
+              <div class="perfect-line"></div>
+            </div>
+            <div class="zone-yellow zone-yellow-bottom"></div>
+            <div class="zone-red zone-bottom"></div>
+            
+            <!-- Moving Indicator (Arrow / Pointer) -->
+            <div class="timing-indicator" id="timing-indicator">
+              <div class="indicator-arrow"></div>
+              <div class="indicator-glow"></div>
+            </div>
+          </div>
+          <div class="timing-help">
+            <span class="help-green">Green: 4 / 6</span>
+            <span class="help-yellow">Yellow: 1 - 3</span>
+            <span class="help-red">Red: OUT</span>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- 3. GAME OVER SCREEN -->
+    <section id="game-over-screen" class="screen hidden">
+      <div class="game-over-container">
+        
+        <!-- Big Trophy Icon or New High Score Banner -->
+        <div class="game-over-header">
+          <div id="new-high-score-banner" class="high-score-banner hidden">
+            <span>🎉 NEW HIGH SCORE! 🎉</span>
+          </div>
+          <h1 class="game-over-title">MATCH OVER</h1>
+        </div>
+
+        <!-- Scoreboard Overview Card -->
+        <div class="scorecard-card">
+          <div class="scorecard-total">
+            <span class="scorecard-label">TOTAL RUNS</span>
+            <span class="scorecard-value" id="summary-total-score">0/3</span>
+          </div>
+          
+          <div class="scorecard-divider"></div>
+
+          <!-- Individual Player Card list -->
+          <div class="batsmen-summary-list">
+            <div class="batsman-row">
+              <div class="player-name-section">
+                <span class="player-num">1</span>
+                <span class="player-name">Rohit</span>
+              </div>
+              <div class="player-stats-section">
+                <span class="player-runs" id="summary-rohit-runs">0</span>
+                <span class="player-balls" id="summary-rohit-balls">(0b)</span>
+              </div>
+              <div class="player-sr-section">
+                <span class="sr-label">SR:</span>
+                <span class="player-sr" id="summary-rohit-sr">0.00</span>
+              </div>
+            </div>
+            
+            <div class="batsman-row">
+              <div class="player-name-section">
+                <span class="player-num">2</span>
+                <span class="player-name">Virat</span>
+              </div>
+              <div class="player-stats-section">
+                <span class="player-runs" id="summary-virat-runs">0</span>
+                <span class="player-balls" id="summary-virat-balls">(0b)</span>
+              </div>
+              <div class="player-sr-section">
+                <span class="sr-label">SR:</span>
+                <span class="player-sr" id="summary-virat-sr">0.00</span>
+              </div>
+            </div>
+            
+            <div class="batsman-row">
+              <div class="player-name-section">
+                <span class="player-num">3</span>
+                <span class="player-name">Dhoni</span>
+              </div>
+              <div class="player-stats-section">
+                <span class="player-runs" id="summary-dhoni-runs">0</span>
+                <span class="player-balls" id="summary-dhoni-balls">(0b)</span>
+              </div>
+              <div class="player-sr-section">
+                <span class="sr-label">SR:</span>
+                <span class="player-sr" id="summary-dhoni-sr">0.00</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="scorecard-divider"></div>
+
+          <div class="scorecard-records">
+            <div class="record-row">
+              <span>All-Time High Score:</span>
+              <span class="record-val neon-cyan" id="summary-high-score">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="game-over-actions">
+          <button id="btn-replay" class="btn btn-primary pulse-effect">
+            PLAY AGAIN
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          </button>
+          <button id="btn-menu" class="btn btn-secondary">
+            MAIN MENU
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Pause Modal Overlay -->
+    <div id="pause-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <h2 class="modal-title">GAME PAUSED</h2>
+        <p class="modal-subtitle">Take a breath, Skipper!</p>
+        <div class="modal-actions">
+          <button id="btn-resume" class="btn btn-primary">
+            RESUME
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
+          <button id="btn-modal-restart" class="btn btn-secondary">
+            RESTART MATCH
+          </button>
+          <button id="btn-modal-exit" class="btn btn-danger">
+            QUIT TO MENU
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Live Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main JavaScript File -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
